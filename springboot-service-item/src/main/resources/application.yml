@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: service-item
+
+server:
+  port: 8002
+
+service-products:
+  ribbon:
+    listOfServers: localhost:8001,localhost:9001

@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: service-products
+    
+server:
+  port: 8001
+
