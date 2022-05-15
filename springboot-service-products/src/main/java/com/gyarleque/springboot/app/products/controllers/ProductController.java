@@ -42,10 +42,14 @@ public class ProductController {
 		// product.setPort(Integer.parseInt(env.getProperty("server.port")));
 		product.setPort(port);
 		
-		boolean ok = false;
-		if (!ok) {
-			throw new RuntimeException("No se pudo cargar el producto");
+		/*
+		 try {
+			Thread.sleep(5000L);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		*/
 		
 		return product;
 	}
