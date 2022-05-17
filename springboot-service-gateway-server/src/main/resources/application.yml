@@ -8,14 +8,28 @@ spring:
         uri: lb://service-products
         predicates:
         - Path=/api/products/**
+        #- Header=token,\d+
+        #- Header=Content-Type,application/json
+        #- Method=GET,POST
+        #- Query=color
+        #- Cookie=color,blue
         filters:
           - StripPrefix=2
+          - ExampleCookie=Hello. Its a message personalized, user, GiancarloYarleque
+          #- name: Example
+          #  args:
+          #    message: Hello, Its a message personalized
+          #    cookieName: user
+          #    cookieValue: GiancarloYarleque
       - id: service-item
         uri: lb://service-item
         predicates:
         - Path=/api/items/**
         filters:
           - StripPrefix=2
+          - AddRequestHeader=token-request, 123456
+          - AddResponseHeader=token-response, 12345678
+          - AddRequestParameter=name, Giancarlo
           
 
 server:
