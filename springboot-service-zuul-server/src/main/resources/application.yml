@@ -16,7 +16,7 @@ zuul:
       service-id: service-products
       path: /api/products/**
     items:
-      service-id: service-item
+      service-id: service-items
       path: /api/items/**
 
 #hystrix:

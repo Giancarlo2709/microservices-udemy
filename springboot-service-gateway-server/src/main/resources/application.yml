@@ -48,8 +48,8 @@ spring:
           #    message: Hello, Its a message personalized
           #    cookieName: user
           #    cookieValue: GiancarloYarleque
-      - id: service-item
-        uri: lb://service-item
+      - id: service-items
+        uri: lb://service-items
         predicates:
         - Path=/api/items/**
         filters:

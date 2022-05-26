@@ -1,13 +1,20 @@
 package com.gyarleque.springboot.app.item.controllers;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.core.env.Environment;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -21,6 +28,7 @@ import com.gyarleque.springboot.app.item.models.service.ItemService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 
+@RefreshScope
 @RestController
 public class ItemController {
 	
@@ -28,12 +36,19 @@ public class ItemController {
 	private static final Logger logger = LoggerFactory.getLogger(ItemController.class);
 
 	
+	@SuppressWarnings("rawtypes")
 	@Autowired
 	private CircuitBreakerFactory cbFactory;
 	
 	@Autowired
 	@Qualifier("serviceFeign")
 	private ItemService itemService;
+	
+	@Value("${configuration.text}")
+	private String text;
+	
+	@Autowired
+	private Environment env;
 	
 	@GetMapping("/list")
 	public List<Item> findAll(@RequestParam(name="name", required = false) String name, 
@@ -91,5 +106,23 @@ public class ItemController {
 				.count(count)
 				.build());
 	}
+	
+	@GetMapping("/get-config")
+	public ResponseEntity<?> getConfig(@Value("${server.port}") String port) {
+		
+		logger.info(text);
+		
+		Map<String, String> json = new HashMap<>();
+		json.put("text", text);
+		json.put("port", port);
+		
+		if (env.getActiveProfiles().length > 0 && env.getActiveProfiles()[0].equals("dev")) {
+			json.put("autor.name", env.getProperty("configuration.autor.name"));
+			json.put("autor.email", env.getProperty("configuration.autor.email"));
+		}
+		
+		return new ResponseEntity<Map<String, String>>(json, HttpStatus.OK);
+	}
+	
 
 }
