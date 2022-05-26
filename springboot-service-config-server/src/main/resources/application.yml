@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: file:///C:/Users/51998/Desktop/config
+          #uri: https://github.com/Giancarlo2709/servicio-items-config.git
+          default-label: master
+
+server:
+  port: 8888

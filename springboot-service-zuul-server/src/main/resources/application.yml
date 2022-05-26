@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: service-zuul-server
+
+server:
+  port: 8090
+  
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+zuul:
+  routes:
+    products:
+      service-id: service-products
+      path: /api/products/**
+    items:
+      service-id: service-items
+      path: /api/items/**
+
+#hystrix:
+#  command:
+#    default:
+#      execution:
+#        isolation:
+#          thread:
+#            timeoutInMilliseconds: 13000
+
+#ribbon:
+#  ConnectTimeout: 3000
+#  ReadTimeout: 10000
