@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gyarleque.springboot.app.item.models.Item;
-import com.gyarleque.springboot.app.item.models.Product;
+import com.gyarleque.springboot.app.commons.models.entity.Product;
 import com.gyarleque.springboot.app.item.models.service.ItemService;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;

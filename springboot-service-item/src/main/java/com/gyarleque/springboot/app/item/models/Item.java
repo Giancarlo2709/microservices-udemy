@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import com.gyarleque.springboot.app.commons.models.entity.Product;
+
 @Getter
 @Setter
 @AllArgsConstructor

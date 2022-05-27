@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gyarleque.springboot.app.products.models.entity.Product;
+import com.gyarleque.springboot.app.commons.models.entity.Product;
 import com.gyarleque.springboot.app.products.models.service.ProductService;
 
 @RestController
