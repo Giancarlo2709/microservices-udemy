@@ -3,7 +3,7 @@ package com.gyarleque.springboot.app.item.models.service;
 import java.util.List;
 
 import com.gyarleque.springboot.app.item.models.Item;
-import com.gyarleque.springboot.app.item.models.Product;
+import com.gyarleque.springboot.app.commons.models.entity.Product;
 
 public interface ItemService {
 	
