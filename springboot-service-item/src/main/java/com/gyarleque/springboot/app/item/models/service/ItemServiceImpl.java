@@ -7,6 +7,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -43,6 +46,36 @@ public class ItemServiceImpl implements ItemService {
 				.product(product)
 				.count(count)
 				.build();
+	}
+
+	@Override
+	public Product save(Product product) {
+		HttpEntity<Product> body = new HttpEntity<Product>(product);
+		
+		ResponseEntity<Product> response = restTemplate
+				.exchange("http://service-products/create", HttpMethod.POST, body, Product.class);
+		
+		return response.getBody();
+	}
+
+	@Override
+	public Product update(Product product, Long id) {
+		Map<String, String> pathVariables = new HashMap<>();		
+		pathVariables.put("id", id.toString());
+		
+		HttpEntity<Product> body = new HttpEntity<Product>(product);	
+		ResponseEntity<Product> response = restTemplate
+				.exchange("http://service-products/edit/{id}", HttpMethod.PUT, body, Product.class, pathVariables);
+		
+		return response.getBody();
+	}
+
+	@Override
+	public void delete(Long id) {
+		Map<String, String> pathVariables = new HashMap<>();		
+		pathVariables.put("id", id.toString());
+		
+		restTemplate.delete("http://service-products/delete/{id}", pathVariables);
 	}
 
 }
