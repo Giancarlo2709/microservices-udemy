@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.gyarleque.springboot.app.item.clients.ProductClientRest;
 import com.gyarleque.springboot.app.item.models.Item;
-import com.gyarleque.springboot.app.item.models.Product;
+import com.gyarleque.springboot.app.commons.models.entity.Product;
 
 @Service("serviceFeign")
 // @Primary

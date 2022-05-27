@@ -1,4 +1,4 @@
-package com.gyarleque.springboot.app.products.models.entity;
+package com.gyarleque.springboot.app.commons.models.entity;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -13,13 +13,19 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name = "products")
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Product implements Serializable {
 	
 

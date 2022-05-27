@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gyarleque.springboot.app.products.models.entity.Product;
+import com.gyarleque.springboot.app.commons.models.entity.Product;
 import com.gyarleque.springboot.app.products.models.service.ProductService;
 
 @RestController

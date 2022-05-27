@@ -2,7 +2,7 @@ package com.gyarleque.springboot.app.products.models.service;
 
 import java.util.List;
 
-import com.gyarleque.springboot.app.products.models.entity.Product;
+import com.gyarleque.springboot.app.commons.models.entity.Product;
 
 public interface ProductService {
 	

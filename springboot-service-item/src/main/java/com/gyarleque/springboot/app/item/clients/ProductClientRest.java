@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.gyarleque.springboot.app.item.models.Product;
+import com.gyarleque.springboot.app.commons.models.entity.Product;
 
 @FeignClient(name = "service-products")
 public interface ProductClientRest {
