@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.gyarleque.springboot.app.item.clients.ProductClientRest;
 import com.gyarleque.springboot.app.item.models.Item;
+import com.gyarleque.springboot.app.item.models.Product;
 
 @Service("serviceFeign")
 // @Primary
@@ -31,6 +32,21 @@ public class ItemServiceFeign implements ItemService {
 				.product(clientFeign.detail(id))
 				.count(count)
 				.build();
+	}
+
+	@Override
+	public Product save(Product product) {
+		return clientFeign.create(product);
+	}
+
+	@Override
+	public Product update(Product product, Long id) {
+		return clientFeign.update(product, id);
+	}
+
+	@Override
+	public void delete(Long id) {
+		clientFeign.delete(id);		
 	}
 	
 	
