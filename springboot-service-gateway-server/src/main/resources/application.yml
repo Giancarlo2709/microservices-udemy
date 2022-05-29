@@ -26,6 +26,12 @@ spring:
   cloud:
     gateway:
       routes:
+      - id: service-users
+        uri: lb://service-users
+        predicates:
+        - Path=/api/users/**
+        filters:
+          - StripPrefix=2
       - id: service-products
         uri: lb://service-products
         predicates:
@@ -56,8 +62,7 @@ spring:
           - StripPrefix=2
           - AddRequestHeader=token-request, 123456
           - AddResponseHeader=token-response, 12345678
-          - AddRequestParameter=name, Giancarlo
-          
+          - AddRequestParameter=name, Giancarlo          
 
 server:
   port: 8090
@@ -66,9 +71,6 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka
-
-
-
 
 # How make with application.properties
 #spring.cloud.gateway.routes[0].id=service-products
