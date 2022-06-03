@@ -32,6 +32,13 @@ spring:
         - Path=/api/users/**
         filters:
           - StripPrefix=2
+      - id: services-oauth
+        uri: lb://services-oauth
+        predicates:
+        - Path=/api/security/**
+        filters:
+          - StripPrefix=2
+          #- RemoveResponseHeader=X-Response-Foo
       - id: service-products
         uri: lb://service-products
         predicates:

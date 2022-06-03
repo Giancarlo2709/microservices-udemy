@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: services-oauth
+  cloud:
+    config:
+      uri: http://localhost:8888
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

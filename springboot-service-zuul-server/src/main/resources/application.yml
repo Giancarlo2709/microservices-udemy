@@ -18,6 +18,13 @@ zuul:
     items:
       service-id: service-items
       path: /api/items/**
+    users:
+      service-id: service-users
+      path: /api/users/**
+    oauth:
+      service-id: services-oauth
+      path: /api/security/**
+      sensitive-headers: "Cookie,Set-Cookie"
 
 #hystrix:
 #  command:
