@@ -23,6 +23,8 @@ resilience4j:
 spring:
   application:
     name: service-gateway-server
+  config:
+    import: "optional:configserver:"
   cloud:
     gateway:
       routes:
