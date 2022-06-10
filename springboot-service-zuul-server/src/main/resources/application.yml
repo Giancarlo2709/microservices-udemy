@@ -1,6 +1,13 @@
 spring:
   application:
     name: service-zuul-server
+  sleuth:
+    sampler:
+      probability: 1.0
+  zipkin:
+    base-url: http://localhost:9411/
+    sender:
+      type: rabbit
 
 server:
   port: 8090
