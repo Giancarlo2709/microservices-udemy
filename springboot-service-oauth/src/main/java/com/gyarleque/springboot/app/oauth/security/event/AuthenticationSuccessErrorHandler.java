@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import com.gyarleque.springboot.app.commons.users.models.entity.User;
 import com.gyarleque.springboot.app.oauth.services.UserService;
 
+import brave.Tracer;
 import feign.FeignException;
 
 @Component
@@ -23,6 +24,9 @@ public class AuthenticationSuccessErrorHandler implements AuthenticationEventPub
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private Tracer tracer;
 
 	@Override
 	public void publishAuthenticationSuccess(Authentication authentication) {
@@ -45,11 +49,16 @@ public class AuthenticationSuccessErrorHandler implements AuthenticationEventPub
 
 	@Override
 	public void publishAuthenticationFailure(AuthenticationException exception, Authentication authentication) {
-		logger.error("Login Error: " + exception.getMessage());
+		String message = "Login Error: " + exception.getMessage();
+		logger.error(message);
 		
 		String username = authentication.getName();
 		
 		try {
+			
+			StringBuilder errors = new StringBuilder();
+			errors.append(message);
+			
 			User user = userService.findByUsername(username);
 			
 			if(Objects.isNull(user.getRetry())) {
@@ -62,12 +71,18 @@ public class AuthenticationSuccessErrorHandler implements AuthenticationEventPub
 			
 			logger.info("Retry after: " + user.getRetry());
 			
+			errors.append(" - Retry after Login: " + user.getRetry());
+			
 			if (user.getRetry() >= 3) {
-				logger.info(String.format("The user %s disabled for maximum attempts", username));
+				String errorMaxRetries = String.format("The user %s disabled for maximum attempts", username);
+				logger.info(errorMaxRetries);
+				errors.append(" - ").append(errorMaxRetries);
 				user.setStatus(false);
 			}
 			
 			userService.update(user, user.getId());
+			
+			tracer.currentSpan().tag("error.message", errors.toString());
 			
 		} catch(FeignException e) {
 			logger.error(String.format("User %s not found", username));
