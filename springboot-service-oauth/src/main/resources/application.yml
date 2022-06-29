@@ -9,12 +9,12 @@ spring:
     sender:
       type: rabbit
   config:
-    import: "optional:configserver:"
-    
+    import: "optional:configserver:http://config-server:8888"
+    #import: "optional:configserver:"   
 server:
   port: 9100
   
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://eureka-server:8761/eureka

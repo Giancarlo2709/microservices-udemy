@@ -1,0 +1,128 @@
+###### config-server
+# generate images
+docker build -t config-server:v1 .
+
+###### create network
+docker network create springcloud
+
+# run container
+docker run -p 8888:8888 --name config-server --network springcloud config-server:v1
+
+# Ctrl C - Exit log
+
+###### eureka-server
+# generate images
+docker build -t eureka-server:v1 .
+
+# run container
+docker run -p 8761:8761 --name eureka-server --network springcloud eureka-server:v1
+
+###### mysql
+docker pull mysql:8
+
+# run container - if port 3306 in use, stop service mysql
+docker run -p 3306:3306 --name service-mysql8 --network springcloud -e MYSQL_ROOT_PASSWORD=123456 -e MYSQL_DATABASE=db_spring_cloud -d mysql:8
+
+# into to console mysql
+docker exec -it service-mysql8 bash
+
+ALTER USER 'root@localhost' IDENTIFIED WITH mysql_native_password BY '123456';
+ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY '123456';
+
+CREATE USER 'zipkin'@'localhost' IDENTIFIED WITH mysql_native_password BY '123456';
+GRANT ALL ON `zipkin`.* TO 'zipkin'@'localhost';
+
+SHOW GRANTS FOR 'zipkin'@'localhost';
+
+###### postgres
+docker pull postgres:12-alpine
+
+# run conatiner - if port 5432 in use, stop service postgres
+docker run -p 5432:5432 --name service-postgres12 --network springcloud -e POSTGRES_PASSWORD=123456 -e POSTGRES_DB=db_spring_cloud -d postgres:12-alpine
+
+###### service-products
+
+# generate jar
+.\mvnw clean package -DskipTests
+
+
+docker build -t service-products:v1 .
+
+# run container - -P elije el puerto aleatoriamente
+docker run -P --name service-products --network springcloud service-products:v1
+
+
+###### service-zuul-server
+
+# generate jar
+.\mvnw clean package -DskipTests
+
+
+docker build -t service-zuul-server:v1 .
+
+# run container
+docker run -p 8090:8090 --name service-zuul-server --network springcloud service-zuul-server:v1
+
+######  service-users
+
+# generate jar
+.\mvnw clean package -DskipTests
+
+
+docker build -t service-users:v1 .
+
+# run container - -P elije el puerto aleatoriamente
+docker run -P --name service-users --network springcloud service-users:v1
+
+###### service-oauth
+
+## add properties config server spring.config.import="optional:configserver:http://config-server:8888"
+# generate jar
+.\mvnw clean package -DskipTests
+
+
+docker build -t services-oauth:v1 .
+
+# run container - -P elije el puerto aleatoriamente
+docker run -p 9100:9100 --name services-oauth --network springcloud services-oauth:v1
+
+###### service-item
+
+# generate jar
+.\mvnw clean package -DskipTests
+
+docker build -t service-items:v1 .
+
+docker run -p 8002:8002 -p 8005:8005 -p 8007:8007 --name service-items --network springcloud service-items:v1
+
+###### rabbitmq
+docker run -d -it --rm --name rabbitmq --network springcloud -p 5672:5672 -p 15672:15672 rabbitmq:3.10-management
+
+###### zipkin
+docker build -t zipkin-server:v1 .
+
+docker run -p 9411:9411 --name zipkin-server --network springcloud -e RABBIT_ADDRESSES=rabbitmq -e STORAGE_TYPE=mysql -e MYSQL_USER=zipkin -e MYSQL_PASS=123456 -e MYSQL_HOST=service-mysql8 zipkin-server:v1
+
+
+
+
+#######docker-compose commands
+docker-compose up -d
+
+docker-compose down -v
+
+docker-compose up -d config-server
+
+docker-compose up -d eureka-server
+
+docker-compose up -d service-mysql8
+
+docker-compose up -d service-products
+
+docker-compose up -d service-items
+
+docker-compose up -d service-zuul-server
+
+
+
+
